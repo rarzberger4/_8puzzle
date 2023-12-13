@@ -1,5 +1,12 @@
+
+
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Hello world");
+        Puzzle puzzle = new Puzzle();
+
+        puzzle.fillRnd();
+        puzzle.printPuzzle();
+
     }
 }
