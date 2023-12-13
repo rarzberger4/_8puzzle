@@ -2,12 +2,21 @@ import java.util.Comparator;
 
 public class PuzzleNode {
 
-    public Puzzle data;
 
+    public Puzzle childNode;
     private String name;
     public int g;
     public int h;
     private PuzzleNode next;
+
+    public Puzzle getChildNode() {
+        return childNode;
+    }
+
+    public void setChildNode(Puzzle childNode) {
+        this.childNode = childNode;
+    }
+
 
     public PuzzleNode(int g, int h, String name) {
         this.g = g;
