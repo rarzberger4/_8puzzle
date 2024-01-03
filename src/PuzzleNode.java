@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Comparator;
 
 public class PuzzleNode {
@@ -43,7 +45,7 @@ class PNodeComparator implements Comparator<PuzzleNode> {
 
     // Overriding compare()method of Comparator
     // for ascending order of PuzzleNodes
-    public int compare(PuzzleNode s1, PuzzleNode s2) {
+    public int compare(@org.jetbrains.annotations.NotNull PuzzleNode s1, @NotNull PuzzleNode s2) {
         if ((s1.g + s1.h) > (s2.g + s2.h))
             return 1;
         else if ((s1.g + s1.h) < (s2.g + s2.h))

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Puzzle {
     int[][] puzzle = new int[3][3];
+    private final int[][] goalState = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
 
 
     public int[][] getPuzzle() {
@@ -34,7 +35,6 @@ public class Puzzle {
         }
     }
 
-
     public void printPuzzle(){
         for (int row = 0; row < this.puzzle.length; row++)//Cycles through rows
         {
@@ -46,6 +46,20 @@ public class Puzzle {
         }
     }
 
+    public int calculateManhattanDistance() {
+        int distance = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int value = puzzle[i][j];
+                if (value != 0) { // Skip the blank tile
+                    int targetX = (value - 1) / 3; // Expected x-coordinate (row)
+                    int targetY = (value - 1) % 3; // Expected y-coordinate (col)
+                    distance += Math.abs(i - targetX) + Math.abs(j - targetY);      //calculate distance in regard to the solved state
+                }
+            }
+        }
+        return distance;
+    }
 }
 
 
