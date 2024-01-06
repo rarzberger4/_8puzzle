@@ -7,15 +7,11 @@ public class Main {
         long totalTimeManhattan = 0; // Time in nanoseconds
         long totalTimeHamming = 0;   // Time in nanoseconds
 
-        // In your Main class or testing method
-        testPuzzle(new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 0}}, "Easy Puzzle"); // 1 move from solution
-        testPuzzle(new int[][]{{1, 2, 3}, {4, 5, 0}, {7, 8, 6}}, "Moderate Puzzle"); // 3 moves from solution
-        testPuzzle(new int[][]{{1, 2, 3}, {0, 4, 6}, {7, 5, 8}}, "Hard Puzzle"); // 5 moves from solution
 
         for (int i = 0; i < 100; i++) {
             long startTime, endTime;
 
-            //System.out.println("Manhattan:");
+            // System.out.println("Manhattan:");
             // Measure time for Manhattan heuristic
             startTime = System.nanoTime();
             Puzzle initialPuzzle = new Puzzle();
@@ -46,26 +42,6 @@ public class Main {
         System.out.println("Average computation time (Hamming): " + avgTimeHammingSeconds + " seconds");
     }
 
-    private static void testPuzzle(int[][] puzzleState, String puzzleName) {
-        System.out.println("Testing " + puzzleName + ":");
-
-        Puzzle puzzle = new Puzzle();
-        puzzle.setPuzzleState(puzzleState);
-
-        long startTime = System.nanoTime();
-        int nodesExpanded = runAlgorithm(HeuristicType.MANHATTAN, puzzle);
-        long endTime = System.nanoTime();
-        double timeSeconds = (endTime - startTime) / 1_000_000_000.0;
-
-        System.out.println("Manhattan - Nodes Expanded: " + nodesExpanded + ", Time: " + timeSeconds + " seconds");
-
-        startTime = System.nanoTime();
-        nodesExpanded = runAlgorithm(HeuristicType.HAMMING, puzzle);
-        endTime = System.nanoTime();
-        timeSeconds = (endTime - startTime) / 1_000_000_000.0;
-
-        System.out.println("Hamming - Nodes Expanded: " + nodesExpanded + ", Time: " + timeSeconds + " seconds");
-    }
     static int runAlgorithm(HeuristicType heuristicType, Puzzle puzzle) {
         // Initialize the priority queue and explored states set
         PriorityQueue<PuzzleNode> openSet = new PriorityQueue<>(new PNodeComparator());
