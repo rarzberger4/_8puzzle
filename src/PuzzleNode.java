@@ -10,14 +10,6 @@ public class PuzzleNode {
     private int g;
     private int h;
 
-    public Puzzle getChildNode() {
-        return childNode;
-    }
-
-    public void setChildNode(Puzzle childNode) {
-        this.childNode = childNode;
-    }
-
 
     public PuzzleNode(int g, int h, Puzzle puzzle, Puzzle parent) {
         this.g = g;
