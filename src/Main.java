@@ -1,41 +1,57 @@
-import java.util.LinkedList;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        // Your code for initializing the puzzle
+        int totalExpandedNodesManhattan = 0;
+        int totalExpandedNodesHamming = 0;
 
+        for (int i = 0; i < 100; i++) {
+            totalExpandedNodesManhattan += runAlgorithm(HeuristicType.MANHATTAN);
+            //System.out.println(totalExpandedNodesManhattan);
+            totalExpandedNodesHamming += runAlgorithm(HeuristicType.HAMMING);
+            //System.out.println(totalExpandedNodesHamming);
+        }
+
+        System.out.println("Average nodes expanded (Manhattan): " + (totalExpandedNodesManhattan / 100.0));
+        System.out.println("Average nodes expanded (Hamming): " + (totalExpandedNodesHamming / 100.0));
+
+
+
+    }
+
+    private static int runAlgorithm(HeuristicType heuristicType) {
         PriorityQueue<PuzzleNode> openSet = new PriorityQueue<>(new PNodeComparator());
-
+        Map<String, Integer> stateFscoreMap = new HashMap<>();
         Puzzle initialPuzzle = new Puzzle();
-        initialPuzzle.fillRnd();
-        initialPuzzle.printPuzzle();
-
-        PuzzleNode initialNode = new PuzzleNode(initialPuzzle, null, 0, initialPuzzle.calculateHeuristic(HeuristicType.MANHATTAN));
+        initialPuzzle.fill();
+        PuzzleNode initialNode = new PuzzleNode(initialPuzzle, null, 0, initialPuzzle.calculateHeuristic(heuristicType));
         openSet.add(initialNode);
+        stateFscoreMap.put(initialPuzzle.toString(), initialNode.getF());
 
+        int nodesExpanded = 0;
         while (!openSet.isEmpty()) {
             PuzzleNode currentNode = openSet.poll();
+            nodesExpanded++;
             if (currentNode.getPuzzle().isGoalState()) {
-                printSolutionPath(currentNode);
-                return;
+                return nodesExpanded;
             }
 
             for (Puzzle neighbor : currentNode.getPuzzle().getNeighbors()) {
-                int tentativeG = currentNode.getG() + 1; // Assuming each move costs 1
-                PuzzleNode neighborNode = new PuzzleNode(neighbor, currentNode, tentativeG, neighbor.calculateHeuristic(HeuristicType.MANHATTAN));
+                int tentativeG = currentNode.getG() + 1;
+                PuzzleNode neighborNode = new PuzzleNode(neighbor, currentNode, tentativeG, neighbor.calculateHeuristic(heuristicType));
+                String neighborState = neighbor.toString();
+                int neighborF = neighborNode.getF();
 
-                // Add neighborNode to the open set if it's not there already with a lower f-score
-                if (!containsLowerFScore(openSet, neighborNode)) {
+                if (!stateFscoreMap.containsKey(neighborState) || stateFscoreMap.get(neighborState) > neighborF) {
+                    stateFscoreMap.put(neighborState, neighborF);
                     openSet.add(neighborNode);
                 }
             }
         }
+        return nodesExpanded;
     }
 
-    private static boolean containsLowerFScore(PriorityQueue<PuzzleNode> openSet, PuzzleNode node) {
-        return openSet.stream().anyMatch(n -> n.getPuzzle().equals(node.getPuzzle()) && n.getF() <= node.getF());
-    }
+
 
     private static void printSolutionPath(PuzzleNode node) {
         LinkedList<PuzzleNode> path = new LinkedList<>();
@@ -51,6 +67,8 @@ public class Main {
     }
 }
 
+
 enum HeuristicType {
     MANHATTAN, HAMMING
 }
+

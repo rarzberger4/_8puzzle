@@ -1,10 +1,10 @@
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 
 public class Puzzle {
     int[][] puzzle = new int[3][3];
-    private final int[][] goalState = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
+    private final int[][] goalState = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
 
 
     public int[][] getPuzzle() {
@@ -19,20 +19,25 @@ public class Puzzle {
     private int randomIntFromInterval(int min, int max) { // min and max included
         return (int) Math.floor(Math.random() * (max - min + 1) + min);
     }
-    public void fillRnd(){
+    public void fill(){
         List<Integer> drawn = new ArrayList<Integer>(8);
         int rndNum;
 
-
-        for (int i = 0; i < this.puzzle.length; i++) {
-            for (int j = 0; j < this.puzzle[i].length; j++) {
-                do{
-                    rndNum = randomIntFromInterval(0,8);
-                }while(drawn.contains(rndNum));
-                drawn.add(rndNum);
-                this.puzzle[i][j] = rndNum;
+        do{
+            drawn.clear();
+            //System.out.println("generate Puzzle");
+            for (int i = 0; i < this.puzzle.length; i++) {
+                for (int j = 0; j < this.puzzle[i].length; j++) {
+                    do{
+                        rndNum = randomIntFromInterval(0,8);
+                    }while(drawn.contains(rndNum));
+                    drawn.add(rndNum);
+                    this.puzzle[i][j] = rndNum;
+                }
             }
-        }
+        }while(!isSolvable(this.puzzle));
+
+
     }
 
     public void printPuzzle(){
@@ -51,10 +56,10 @@ public class Puzzle {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 int value = puzzle[i][j];
-                if (value != 0) { // Skip the blank tile
-                    int targetX = (value - 1) / 3; // Expected x-coordinate (row)
-                    int targetY = (value - 1) % 3; // Expected y-coordinate (col)
-                    distance += Math.abs(i - targetX) + Math.abs(j - targetY);      //calculate distance in regard to the solved state
+                if (value != 0) {
+                    int targetX = (value - 1) / 3;
+                    int targetY = (value - 1) % 3;
+                    distance += Math.abs(i - targetX) + Math.abs(j - targetY);
                 }
             }
         }
@@ -74,7 +79,10 @@ public class Puzzle {
         return count;
     }
 
-
+    @Override
+    public String toString() {
+        return Arrays.deepToString(this.puzzle);
+    }
     public List<Puzzle> getNeighbors() {
         List<Puzzle> neighbors = new ArrayList<>();
         int blankRow = -1, blankCol = -1;
@@ -88,19 +96,20 @@ public class Puzzle {
                     break;
                 }
             }
-            if (blankRow != -1) break;
+            if (blankRow != -1) break; // Break if blank tile is found
         }
 
-        // Generate neighbors by sliding tiles into the blank space
-        // Up, Down, Left, Right moves if valid
+        // Directions: Up, Down, Left, Right
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         for (int[] dir : directions) {
             int newRow = blankRow + dir[0];
             int newCol = blankCol + dir[1];
+
+            // Check if the new position is within the bounds of the puzzle
             if (newRow >= 0 && newRow < 3 && newCol >= 0 && newCol < 3) {
                 Puzzle newPuzzle = new Puzzle();
                 newPuzzle.setPuzzle(clonePuzzle(puzzle));
-                newPuzzle.swap(blankRow, blankCol, newRow, newCol);
+                newPuzzle.swap(blankRow, blankCol, newRow, newCol); // Swap the blank tile with the adjacent tile
                 neighbors.add(newPuzzle);
             }
         }
@@ -142,6 +151,41 @@ public class Puzzle {
             default:
                 throw new IllegalArgumentException("Unknown heuristic type");
         }
+    }
+
+    // A utility function to count
+// inversions in given array 'arr[]'
+    static int getInvCount(int[] arr)
+    {
+        int inv_count = 0;
+        for (int i = 0; i < 9; i++)
+            for (int j = i + 1; j < 9; j++)
+
+                // Value 0 is used for empty space
+                if (arr[i] > 0 &&
+                        arr[j] > 0 && arr[i] > arr[j])
+                    inv_count++;
+        return inv_count;
+    }
+
+    // This function returns true
+// if given 8 puzzle is solvable.
+    static boolean isSolvable(int[][] puzzle)
+    {
+        int linearPuzzle[];
+        linearPuzzle = new int[9];
+        int k = 0;
+
+        // Converting 2-D puzzle to linear form
+        for(int i=0; i<3; i++)
+            for(int j=0; j<3; j++)
+                linearPuzzle[k++] = puzzle[i][j];
+
+        // Count inversions in given 8 puzzle
+        int invCount = getInvCount(linearPuzzle);
+
+        // return true if inversion count is even.
+        return (invCount % 2 == 0);
     }
 }
 
