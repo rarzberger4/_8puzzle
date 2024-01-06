@@ -15,6 +15,14 @@ public class Puzzle {
         this.puzzle = puzzle;
     }
 
+    // Method to set up a specific puzzle state
+    public void setPuzzleState(int[][] newState) {
+        this.puzzle = new int[newState.length][newState[0].length];
+        for (int i = 0; i < newState.length; i++) {
+            System.arraycopy(newState[i], 0, this.puzzle[i], 0, newState[i].length);
+        }
+    }
+
 
     private int randomIntFromInterval(int min, int max) { // min and max included
         return (int) Math.floor(Math.random() * (max - min + 1) + min);

@@ -17,7 +17,7 @@ public class PuzzleNode {
         this.puzzle = puzzle;
         this.parent = parent;
         // Log the heuristic values for debugging
-        System.out.println("Creating node: g=" + g + ", h=" + h + ", state=" + puzzle);
+        //System.out.println("Creating node: g=" + g + ", h=" + h + ", state=" + puzzle);
     }
 
 
@@ -62,11 +62,13 @@ class PNodeComparator implements Comparator<PuzzleNode> {
 
     // Overriding compare()method of Comparator
     // for ascending order of PuzzleNodes
-    public int compare(@org.jetbrains.annotations.NotNull PuzzleNode s1, @NotNull PuzzleNode s2) {
-        if ((s1.g + s1.h) > (s2.g + s2.h))
-            return 1;
-        else if ((s1.g + s1.h) < (s2.g + s2.h))
+
+    @Override
+    public int compare(PuzzleNode o1, PuzzleNode o2) {
+        if(o1.getF() > o2.getF()){
             return -1;
-        return 0;
+        }else{
+            return 0;
+        }
     }
 }
