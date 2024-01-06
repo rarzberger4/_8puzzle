@@ -63,8 +63,8 @@ public class Puzzle {
             for (int j = 0; j < 3; j++) {
                 int value = puzzle[i][j];
                 if (value != 0) {
-                    int targetX = (value - 1) / 3;
-                    int targetY = (value - 1) % 3;
+                    int targetX = value / 3;
+                    int targetY = value % 3;
                     distance += Math.abs(i - targetX) + Math.abs(j - targetY);
                 }
             }
