@@ -5,11 +5,10 @@ import java.util.Comparator;
 public class PuzzleNode {
 
 
-    public Puzzle childNode;
-    private String name;
-    public int g;
-    public int h;
-    private PuzzleNode next;
+    private Puzzle parent;
+    private Puzzle puzzle;
+    private int g;
+    private int h;
 
     public Puzzle getChildNode() {
         return childNode;
@@ -20,25 +19,44 @@ public class PuzzleNode {
     }
 
 
-    public PuzzleNode(int g, int h, String name) {
+    public PuzzleNode(int g, int h, Puzzle puzzle, Puzzle parent) {
         this.g = g;
         this.h = h;
-        this.name = name;
+        this.puzzle = puzzle;
+        this.parent = parent;
     }
 
-    public void setNextPuzzleNode(PuzzleNode node) {
-        this.next = node;
+    public Puzzle getParent() {
+        return parent;
     }
 
-    public PuzzleNode getNextPuzzleNode() {
-        return this.next;
+    public void setParent(Puzzle parent) {
+        this.parent = parent;
     }
 
-    public String getName(){
-        return this.name;
+    public Puzzle getPuzzle() {
+        return puzzle;
     }
 
+    public void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
+    }
 
+    public int getG() {
+        return g;
+    }
+
+    public void setG(int g) {
+        this.g = g;
+    }
+
+    public int getH() {
+        return h;
+    }
+
+    public void setH(int h) {
+        this.h = h;
+    }
 }
 
 class PNodeComparator implements Comparator<PuzzleNode> {

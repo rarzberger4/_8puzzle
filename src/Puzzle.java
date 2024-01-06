@@ -60,6 +60,21 @@ public class Puzzle {
         }
         return distance;
     }
+
+
+    public int calculateHammingDistance() {
+        int count = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (puzzle[i][j] != 0 && puzzle[i][j] != goalState[i][j]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
 }
 
 
