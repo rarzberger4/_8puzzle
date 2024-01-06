@@ -5,24 +5,26 @@ import java.util.Comparator;
 public class PuzzleNode {
 
 
-    private Puzzle parent;
+    private PuzzleNode parent;
     private Puzzle puzzle;
     public int g;
     public int h;
 
 
-    public PuzzleNode(int g, int h, Puzzle puzzle, Puzzle parent) {
+    public PuzzleNode(Puzzle puzzle, PuzzleNode parent, int g, int h) {
         this.g = g;
         this.h = h;
         this.puzzle = puzzle;
         this.parent = parent;
     }
 
-    public Puzzle getParent() {
+
+
+    public PuzzleNode getParent() {
         return parent;
     }
 
-    public void setParent(Puzzle parent) {
+    public void setParent(PuzzleNode parent) {
         this.parent = parent;
     }
 
@@ -48,6 +50,9 @@ public class PuzzleNode {
 
     public void setH(int h) {
         this.h = h;
+    }
+    public int getF() {
+        return g + h; // f-score is the sum of g and h
     }
 }
 

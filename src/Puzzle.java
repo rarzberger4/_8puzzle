@@ -132,6 +132,17 @@ public class Puzzle {
         }
         return true;
     }
+
+    public int calculateHeuristic(HeuristicType heuristicType) {
+        switch (heuristicType) {
+            case MANHATTAN:
+                return calculateManhattanDistance();
+            case HAMMING:
+                return calculateHammingDistance();
+            default:
+                throw new IllegalArgumentException("Unknown heuristic type");
+        }
+    }
 }
 
 
