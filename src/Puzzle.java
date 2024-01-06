@@ -28,7 +28,7 @@ public class Puzzle {
         return (int) Math.floor(Math.random() * (max - min + 1) + min);
     }
     public void fill(){
-        List<Integer> drawn = new ArrayList<Integer>(8);
+        List<Integer> drawn = new ArrayList<>(8);
         int rndNum;
 
         do{
@@ -178,7 +178,7 @@ public class Puzzle {
 // if given 8 puzzle is solvable.
     static boolean isSolvable(int[][] puzzle)
     {
-        int linearPuzzle[];
+        int[] linearPuzzle;
         linearPuzzle = new int[9];
         int k = 0;
 
