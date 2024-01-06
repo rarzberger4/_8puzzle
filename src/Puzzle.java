@@ -75,6 +75,52 @@ public class Puzzle {
     }
 
 
+    public List<Puzzle> getNeighbors() {
+        List<Puzzle> neighbors = new ArrayList<>();
+        int blankRow = -1, blankCol = -1;
+
+        // Find the blank (0) tile
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (puzzle[i][j] == 0) {
+                    blankRow = i;
+                    blankCol = j;
+                    break;
+                }
+            }
+            if (blankRow != -1) break;
+        }
+
+        // Generate neighbors by sliding tiles into the blank space
+        // Up, Down, Left, Right moves if valid
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for (int[] dir : directions) {
+            int newRow = blankRow + dir[0];
+            int newCol = blankCol + dir[1];
+            if (newRow >= 0 && newRow < 3 && newCol >= 0 && newCol < 3) {
+                Puzzle newPuzzle = new Puzzle();
+                newPuzzle.setPuzzle(clonePuzzle(puzzle));
+                newPuzzle.swap(blankRow, blankCol, newRow, newCol);
+                neighbors.add(newPuzzle);
+            }
+        }
+
+        return neighbors;
+    }
+
+    private int[][] clonePuzzle(int[][] puzzle) {
+        int[][] newPuzzle = new int[3][3];
+        for (int i = 0; i < 3; i++) {
+            System.arraycopy(puzzle[i], 0, newPuzzle[i], 0, 3);
+        }
+        return newPuzzle;
+    }
+
+    private void swap(int row1, int col1, int row2, int col2) {
+        int temp = puzzle[row1][col1];
+        puzzle[row1][col1] = puzzle[row2][col2];
+        puzzle[row2][col2] = temp;
+    }
 }
 
 
