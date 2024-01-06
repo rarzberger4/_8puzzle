@@ -121,6 +121,17 @@ public class Puzzle {
         puzzle[row1][col1] = puzzle[row2][col2];
         puzzle[row2][col2] = temp;
     }
+
+    public boolean isGoalState() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (puzzle[i][j] != goalState[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
 
 

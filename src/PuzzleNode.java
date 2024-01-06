@@ -7,8 +7,8 @@ public class PuzzleNode {
 
     private Puzzle parent;
     private Puzzle puzzle;
-    private int g;
-    private int h;
+    public int g;
+    public int h;
 
 
     public PuzzleNode(int g, int h, Puzzle puzzle, Puzzle parent) {
