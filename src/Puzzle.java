@@ -36,8 +36,6 @@ public class Puzzle {
                 }
             }
         }while(!isSolvable(this.puzzle));
-
-
     }
 
     public void printPuzzle(){

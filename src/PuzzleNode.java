@@ -16,6 +16,8 @@ public class PuzzleNode {
         this.h = h;
         this.puzzle = puzzle;
         this.parent = parent;
+        // Log the heuristic values for debugging
+        System.out.println("Creating node: g=" + g + ", h=" + h + ", state=" + puzzle);
     }
 
 
