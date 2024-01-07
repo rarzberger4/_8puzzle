@@ -55,13 +55,13 @@ public class Main {
         System.out.println("Hamming nodes expanded (stdDev): " + stdDevNodesHamming);
     }
 
-    static int runAlgorithm(HeuristicType heuristicType, Puzzle puzzle) {
+    static int runAlgorithm(HeuristicType heuristicType, Puzzle initialPuzzle) {
         // Initialize the priority queue and explored states set
         PriorityQueue<PuzzleNode> openSet = new PriorityQueue<>(new PNodeComparator());
         Set<String> exploredStates = new HashSet<>();
 
 
-        Puzzle initialPuzzle = puzzle;
+
         PuzzleNode initialNode = new PuzzleNode(initialPuzzle, null, 0, initialPuzzle.calculateHeuristic(heuristicType));
         openSet.add(initialNode);
 
@@ -118,18 +118,18 @@ public class Main {
         return Math.sqrt(sum / data.length);
     }
 
-    private static void printSolutionPath(PuzzleNode node) {
-        LinkedList<PuzzleNode> path = new LinkedList<>();
-        while (node != null) {
-            path.addFirst(node);
-            node = node.getParent();
-        }
-
-        for (PuzzleNode n : path) {
-            n.getPuzzle().printPuzzle();
-            System.out.println();
-        }
-    }
+//    private static void printSolutionPath(PuzzleNode node) {
+//        LinkedList<PuzzleNode> path = new LinkedList<>();
+//        while (node != null) {
+//            path.addFirst(node);
+//            node = node.getParent();
+//        }
+//
+//        for (PuzzleNode n : path) {
+//            n.getPuzzle().printPuzzle();
+//            System.out.println();
+//        }
+//    }
 }
 enum HeuristicType {
     MANHATTAN, HAMMING
