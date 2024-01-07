@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Puzzle {
     int[][] puzzle = new int[3][3];
-    private final int[][] goalState = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
+    private final int[][] goalState = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};        //Zero at the end is not the same - affects other methods!
 
 
     public int[][] getPuzzle() {
@@ -15,7 +15,7 @@ public class Puzzle {
         this.puzzle = puzzle;
     }
 
-    // Method to set up a specific puzzle state
+    // Method to set up a specific puzzle state, for testing purposes
     public void setPuzzleState(int[][] newState) {
         this.puzzle = new int[newState.length][newState[0].length];
         for (int i = 0; i < newState.length; i++) {
@@ -27,26 +27,27 @@ public class Puzzle {
     private int randomIntFromInterval(int min, int max) { // min and max included
         return (int) Math.floor(Math.random() * (max - min + 1) + min);
     }
-    public void fill(){
+
+    public void fill() {
         List<Integer> drawn = new ArrayList<>(8);
         int rndNum;
 
-        do{
+        do {
             drawn.clear();
             //System.out.println("generate Puzzle");
             for (int i = 0; i < this.puzzle.length; i++) {
                 for (int j = 0; j < this.puzzle[i].length; j++) {
-                    do{
-                        rndNum = randomIntFromInterval(0,8);
-                    }while(drawn.contains(rndNum));
+                    do {
+                        rndNum = randomIntFromInterval(0, 8);
+                    } while (drawn.contains(rndNum));
                     drawn.add(rndNum);
                     this.puzzle[i][j] = rndNum;
                 }
             }
-        }while(!isSolvable(this.puzzle));
+        } while (!isSolvable(this.puzzle));
     }
 
-    public void printPuzzle(){
+    public void printPuzzle() {
         for (int row = 0; row < this.puzzle.length; row++)//Cycles through rows
         {
             for (int col = 0; col < this.puzzle[row].length; col++)//Cycles through columns
@@ -89,7 +90,8 @@ public class Puzzle {
     public String toString() {
         return Arrays.deepToString(this.puzzle);
     }
-    public List<Puzzle> getNeighbors() {
+
+    public List<Puzzle> getNeighbors() {    //gets all valid neighbors
         List<Puzzle> neighbors = new ArrayList<>();
         int blankRow = -1, blankCol = -1;
 
@@ -159,10 +161,8 @@ public class Puzzle {
         }
     }
 
-    // A utility function to count
-// inversions in given array 'arr[]'
-    static int getInvCount(int[] arr)
-    {
+    // A utility function to count inversions in given array 'arr[]'
+    static int getInvCount(int[] arr) {
         int inv_count = 0;
         for (int i = 0; i < 9; i++)
             for (int j = i + 1; j < 9; j++)
@@ -176,15 +176,14 @@ public class Puzzle {
 
     // This function returns true
 // if given 8 puzzle is solvable.
-    static boolean isSolvable(int[][] puzzle)
-    {
+    static boolean isSolvable(int[][] puzzle) {
         int[] linearPuzzle;
         linearPuzzle = new int[9];
         int k = 0;
 
         // Converting 2-D puzzle to linear form
-        for(int i=0; i<3; i++)
-            for(int j=0; j<3; j++)
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
                 linearPuzzle[k++] = puzzle[i][j];
 
         // Count inversions in given 8 puzzle

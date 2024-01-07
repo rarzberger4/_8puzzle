@@ -55,24 +55,23 @@ public class Main {
         System.out.println("Hamming nodes expanded (stdDev): " + stdDevNodesHamming);
     }
 
-    static int runAlgorithm(HeuristicType heuristicType, Puzzle initialPuzzle) {
+
+    static int runAlgorithm(HeuristicType heuristicType, Puzzle initialPuzzle) { //runs the A* algorithm, calls the specific heuristic
         // Initialize the priority queue and explored states set
         PriorityQueue<PuzzleNode> openSet = new PriorityQueue<>(new PNodeComparator());
         Set<String> exploredStates = new HashSet<>();
-
 
 
         PuzzleNode initialNode = new PuzzleNode(initialPuzzle, null, 0, initialPuzzle.calculateHeuristic(heuristicType));
         openSet.add(initialNode);
 
 
-        int nodes = 0;
+        int nodes = 0; //to count the nodes expanded
         while (!openSet.isEmpty()) {
-            PuzzleNode currentNode = openSet.poll();
-            // Log the current state being expanded
-            //System.out.println("Expanding node: f=" + currentNode.getF() + ", state=" + currentNode.getPuzzle());
-
             nodes++;
+            PuzzleNode currentNode = openSet.poll();
+
+
             // Check if the current node is the goal state
             if (currentNode.getPuzzle().isGoalState()) {
                 //System.out.println(nodesExpanded);

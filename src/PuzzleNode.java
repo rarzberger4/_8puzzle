@@ -1,8 +1,6 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Comparator;
 
-public class PuzzleNode {
+public class PuzzleNode {   //node saves a puzzle and its corresponding values of g, h and the parent node
 
 
     private PuzzleNode parent;
@@ -16,8 +14,6 @@ public class PuzzleNode {
         this.h = h;
         this.puzzle = puzzle;
         this.parent = parent;
-        // Log the heuristic values for debugging
-        //System.out.println("Creating node: g=" + g + ", h=" + h + ", state=" + puzzle);
     }
 
 
@@ -60,8 +56,7 @@ public class PuzzleNode {
 
 class PNodeComparator implements Comparator<PuzzleNode> {
 
-    // Overriding compare()method of Comparator
-    // for ascending order of PuzzleNodes
+    // Overriding compare()method of Comparator for ascending order of PuzzleNodes depending on f
 
     @Override
     public int compare(PuzzleNode o1, PuzzleNode o2) {
