@@ -2,13 +2,14 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int totalExpandedNodesManhattan = 0;
-        int totalExpandedNodesHamming = 0;
-        long totalTimeManhattan = 0; // Time in nanoseconds
-        long totalTimeHamming = 0;   // Time in nanoseconds
 
+        int runs = 100;
+        long[] timesManhattan = new long[runs];
+        long[] timesHamming = new long[runs];
+        long[] nodesExpandedManhattan = new long[runs];
+        long[] nodesExpandedHamming = new long[runs];
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < runs; i++) {
             long startTime, endTime;
 
             // System.out.println("Manhattan:");
@@ -16,30 +17,42 @@ public class Main {
             startTime = System.nanoTime();
             Puzzle initialPuzzle = new Puzzle();
             initialPuzzle.fill();
-            totalExpandedNodesManhattan += runAlgorithm(HeuristicType.MANHATTAN, initialPuzzle);
+            nodesExpandedManhattan[i] += runAlgorithm(HeuristicType.MANHATTAN, initialPuzzle);
             endTime = System.nanoTime();
-            totalTimeManhattan += (endTime - startTime);
+            timesManhattan[i] += (endTime - startTime);
 
             // Measure time for Hamming heuristic
             //System.out.println("Hamming:");
             startTime = System.nanoTime();
             Puzzle initialPuzzle2 = new Puzzle();
             initialPuzzle2.fill();
-            totalExpandedNodesHamming += runAlgorithm(HeuristicType.HAMMING, initialPuzzle2);
+            nodesExpandedHamming[i] += runAlgorithm(HeuristicType.HAMMING, initialPuzzle2);
             endTime = System.nanoTime();
-            totalTimeHamming += (endTime - startTime);
+            timesHamming[i] += (endTime - startTime);
         }
 
-        // Calculating average time in seconds
-        double avgTimeManhattanSeconds = totalTimeManhattan / 100.0 / 1_000_000_000.0;
-        double avgTimeHammingSeconds = totalTimeHamming / 100.0 / 1_000_000_000.0;
+        double meanTimeManhattan = calculateMean(timesManhattan);
+        double stdDevTimeManhattan = calculateStandardDeviation(timesManhattan, meanTimeManhattan);
+
+        double meanTimeHamming = calculateMean(timesHamming);
+        double stdDevTimeHamming = calculateStandardDeviation(timesHamming, meanTimeHamming);
+
+        double meanNodesManhattan = calculateMean(nodesExpandedManhattan);
+        double stdDevNodesManhattan = calculateStandardDeviation(nodesExpandedManhattan, meanNodesManhattan);
+
+        double meanNodesHamming = calculateMean(nodesExpandedHamming);
+        double stdDevNodesHamming = calculateStandardDeviation(nodesExpandedHamming, meanNodesHamming);
 
         // Displaying the results
-        System.out.println("Average nodes expanded (Manhattan): " + (totalExpandedNodesManhattan / 100.0));
-        System.out.println("Average computation time (Manhattan): " + avgTimeManhattanSeconds + " seconds");
+        System.out.println("Manhattan computing time (mean): " + (meanTimeManhattan/1_000_000_000.0));
+        System.out.println("Manhattan computing time (stdDev): " + (stdDevTimeManhattan/1_000_000_000.0));
+        System.out.println("Manhattan nodes expanded (mean): " + meanNodesManhattan);
+        System.out.println("Manhattan nodes expanded (stdDev): " + stdDevNodesManhattan);
 
-        System.out.println("Average nodes expanded (Hamming): " + (totalExpandedNodesHamming / 100.0));
-        System.out.println("Average computation time (Hamming): " + avgTimeHammingSeconds + " seconds");
+        System.out.println("Hamming computing time (mean): " + (meanTimeHamming/1_000_000_000.0));
+        System.out.println("Hamming computing time (stdDev): " + (stdDevTimeHamming/1_000_000_000.0));
+        System.out.println("Hamming nodes expanded (mean): " + meanNodesHamming);
+        System.out.println("Hamming nodes expanded (stdDev): " + stdDevNodesHamming);
     }
 
     static int runAlgorithm(HeuristicType heuristicType, Puzzle puzzle) {
@@ -87,6 +100,22 @@ public class Main {
         }
         System.out.println("EXIT");
         return -1;
+    }
+
+    private static double calculateMean(long[] data) {
+        double sum = 0.0;
+        for (long datum : data) {
+            sum += datum;
+        }
+        return sum / data.length;
+    }
+
+    private static double calculateStandardDeviation(long[] data, double mean) {
+        double sum = 0.0;
+        for (long datum : data) {
+            sum += Math.pow(datum - mean, 2);
+        }
+        return Math.sqrt(sum / data.length);
     }
 
     private static void printSolutionPath(PuzzleNode node) {
